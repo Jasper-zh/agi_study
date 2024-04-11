@@ -36,12 +36,12 @@ def get_completion(messages, model="gpt-3.5-turbo"):
     response = client.chat.completions.create(
         model=model,
         messages=messages,
-        temperature=0.7,  # 模型输出的随机性，0 表示随机性最小
+        temperature=0,  # 模型输出的随机性，0 表示随机性最小
         tools=[{  # 用 JSON 描述函数。可以定义多个。由大模型决定调用谁。也可能都不调用
             "type": "function",
             "function": {
-                "name": "sum",
-                "description": "加法器，计算一组数的和",
+                "name": "count",
+                "description": "加法器,计算数字的和",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -59,8 +59,8 @@ def get_completion(messages, model="gpt-3.5-turbo"):
     return response.choices[0].message
 
 def result():
-    prompt = "Tell me the sum of 1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
-    # prompt = "桌上有 2 个苹果，四个桃子和 3 本书，一共有几个水果？"
+    # prompt = "Tell me the sum of 1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
+    prompt = "桌上有 2 个苹果，四个桃子和 3 本书，一共有几个水果？"
     # prompt = "1+2+3...+99+100"
     # prompt = "1024 乘以 1024 是多少？"   # Tools 里没有定义乘法，会怎样？
     # rompt = "太阳从哪边升起？"           # 不需要算加法，会怎样？
@@ -84,7 +84,7 @@ def result():
         # 取响应的函数对象
         tool_call = response.tool_calls[0]
         # 如果函数名称是求和，则取出参数的numbers属性进行求和
-        if (tool_call.function.name == "sum"):
+        if (tool_call.function.name == "count"):
             # 调用 sum
             args = json.loads(tool_call.function.arguments)
             result = sum(args["numbers"])
