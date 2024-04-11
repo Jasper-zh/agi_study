@@ -1,0 +1,21 @@
+{
+    "schema": 1,
+    "type": "completion",
+    "description": "The user enters the city and gets some location recommendations",
+    "completion": {
+        "max_tokens": 256,
+        "temperature": 0,
+        "top_p": 0,
+        "presence_penalty": 0,
+        "frequency_penalty": 0
+    },
+    "input": {
+        "parameters": [
+            {
+                "name": "input",
+                "description": "user input",
+                "defaultValue": ""
+            }
+        ]
+    }
+}
