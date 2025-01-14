@@ -21,19 +21,17 @@ def get_sql_completion(messages, model="gpt-3.5-turbo"):
             "type": "function",
             "function": {
                 "name": "ask_database",
-                "description": "Use this function to answer user questions about business. \
-                            Output should be a fully formed SQL query.",
+                "description": "根据用户的数据库查询问题，输出满足条件sql输出",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
                             "description": f"""
-                            SQL query extracting info to answer the user's question.
-                            SQL should be written using this database schema:
+                            根据用户信息提取生成SQL查询的语句
+                            SQL需要使用的表结构如下:
                             {database_schema_string}
-                            The query should be returned in plain text, not in JSON.
-                            The query should only contain grammars supported by SQLite.
+                            SQL查询需要满足MySQL的语法
                             """,
                         }
                     },
@@ -70,6 +68,7 @@ if __name__ == '__main__':
     """
 
     prompt = "统计每月每件商品的销售额"
+    prompt = "消费最高的用户是谁？"
     # prompt = "这星期消费最高的用户是谁？他买了哪些商品？ 每件商品买了几件？花费多少？"
     messages = [
         {"role": "system", "content": "基于 order 表回答用户问题"},

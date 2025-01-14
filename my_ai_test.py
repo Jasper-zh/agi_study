@@ -14,7 +14,6 @@ from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
 # 配置 OpenAI 服务 （从系统环境读取）
 client = OpenAI(
-    # defaults to os.environ.get("OPENAI_API_KEY")
     api_key=os.getenv("OPENAI_API_KEY"),
     base_url=os.getenv("OPENAI_BASE_URL")
 )
@@ -127,6 +126,7 @@ if __name__ == '__main__':
         {context}
     """
     # 调用大模型
+    print(os.environ.get("OPENAI_API_KEY"))
     response = get_completion(prompt)
     print(response)
 
