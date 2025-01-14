@@ -11,12 +11,12 @@ from dotenv import load_dotenv, find_dotenv
 
 _ = load_dotenv(find_dotenv())
 
-# 加载并分页
+# 加载pdf 取第一页内容
 loader = PyPDFLoader("2402.17177.pdf")
 pages = loader.load_and_split()
 print(pages[0].page_content)
 
-# 段落分割器
+# langchain的段落分割器
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=200,
     chunk_overlap=100,  # 思考：为什么要做overlap
@@ -24,14 +24,14 @@ text_splitter = RecursiveCharacterTextSplitter(
     add_start_index=True,
 )
 
-# 分段
+# 分割器去分割第一页内容
 paragraphs = text_splitter.create_documents([pages[0].page_content])
 
 
 if __name__ == '__main__':
     # 灌库
-    embeddings = OpenAIEmbeddings()
-    db = Chroma.from_documents(paragraphs, embeddings)
+    embeddings = OpenAIEmbeddings() # 词嵌入器
+    db = Chroma.from_documents(paragraphs, embeddings) # 存入向量数据库：传入段落列表和词嵌入器（向量化方式）
 
 
     # Prompt模板
@@ -42,11 +42,13 @@ if __name__ == '__main__':
     """
     prompt = ChatPromptTemplate.from_template(template)
 
-    # Chain
-    llm = ChatOpenAI(temperature=0)
-    retriever = db.as_retriever(search_kwargs={"k": 1})
+    # 获取大模型
+    llm = ChatOpenAI(temperature=0)  # 发散性为0
+    # 获取搜索器
+    retriever = db.as_retriever(search_kwargs={"k": 1})  # 检索结果只取一个
+    # 构建链式调用器（参数question运行时输入，context为检索结果）
     rag_chain = (
-            {"question": RunnablePassthrough(), "context": retriever}
+            {"question": RunnablePassthrough(), "context": retriever} # 参数是检索器时会进行调用，拿结果再构建提示词
             | prompt
             | llm
             | StrOutputParser()
