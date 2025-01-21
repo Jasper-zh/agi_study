@@ -33,6 +33,11 @@ RAG
 智能体
 模型微调
 """
+
+from dotenv import load_dotenv, find_dotenv
+import os
+_ = load_dotenv(find_dotenv())  # 加载.env进环境变量
+
 llm = ChatOpenAI(temperature=0)
 chain = (
         {"outlines": lambda _: outlines, "student_input": RunnablePassthrough()}
@@ -51,7 +56,7 @@ def get_embeddings(text):
         model="text-embedding-3-small",
         dimensions=256
     ).data
-    cache[text] = data[0].embeding
+    cache[text] = data[0].embedding
     return cache[text]
 
 
@@ -66,10 +71,11 @@ def check_duplicated(query,existing,threshold=0.825):
     query_vec = np.array(get_embeddings(query))  # 待校验向量 一维
     mat = np.array([item[1] for item in existing])  # 历史向量 二维
     cos = cos_sim(query_vec,mat) # 一对多进行相似度比较
+    print(f"相似度高于0.825认为属于相同问题{cos}")
     return max(cos) >= threshold
 
 @observe
-def need_answer(question,outlines):
+def need_answer(question,outlines) -> bool:
     langfuse_handler = langfuse_context.get_current_langchain_handler()
     res = chain.invoke(question, config={"callbacks": [langfuse_handler]})
     print(res)
@@ -77,17 +83,23 @@ def need_answer(question,outlines):
         print("问题符合")
     else:
         print("不相关")
+    return res
 
 
 question_list = [("langchain支持java么", get_embeddings("langchain支持java么"))]
 @observe()
 def verify_question(question: str, outlines: str, question_list: list, user_id):
+
     langfuse_context.update_current_trace(name="课堂助手", user_id="001")
     if need_answer(question,outlines):
         if not check_duplicated(question, question_list):
             vec = cache[question]
             question_list.append((question,vec))
             return True
-
     return False
+
+
+if __name__ == '__main__':
+    res = verify_question("RAG一般用什么数据库",outlines,question_list,"001")
+    print(res)
 

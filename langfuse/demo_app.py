@@ -7,16 +7,14 @@
 
 
 
-
-from dotenv import load_dotenv, find_dotenv
-import os
-
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
 from langfuse.decorators import observe, langfuse_context
 
+from dotenv import load_dotenv, find_dotenv
+import os
 _ = load_dotenv(find_dotenv())  # 加载.env进环境变量
 
 # Initialize Langfuse handler
