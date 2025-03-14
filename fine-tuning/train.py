@@ -136,3 +136,4 @@ trainer = Trainer(
 
 # 开始训练
 trainer.train()
+# trainer.train(resume_from_checkpoint="/output/checkpoint") 从指定节点开始
