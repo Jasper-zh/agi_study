@@ -1,2 +1,0 @@
-{{$input}}
-What are the interesting places in this city

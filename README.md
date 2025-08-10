@@ -23,7 +23,7 @@
 - **LangChain** - 最流行的LLM应用开发框架
 - **Semantic Kernel** - 微软的AI应用开发框架
 - **Assistants API** - OpenAI的助手API使用
-- **通义千问代理** - 阿里云大模型应用开发
+- **Qwen Agent** - 阿里一个Agent框架
 
 ### 3. AI代理开发 (03-ai-agent/)
 - **AutoGPT** - 自主AI代理的实现
