@@ -5,10 +5,9 @@ Author: zhang
 Date: 2024/2/28
 """
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv())
+from config import settings
 
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
@@ -42,17 +41,17 @@ output_format = """
 如果信息不准确，输出：{"accurate":false}
 """
 
-context = """
+example = """
 用户：你们有什么流量大的套餐
 客服：您好，我们现在正在推广无限套餐，每月300元就可以享受1000G流量，您感兴趣吗
 """
 
-context2 = """
+example2 = """
 用户：有什么便宜的流量套餐
 客服：您好，我们有个经济型套餐，50元每月
 """
 
-context3 = """
+example3 = """
 用户：流量大的套餐有什么
 客服：我们推荐畅游套餐，180元每月，100G流量，大多数人都够用的
 用户：学生有什么优惠吗
@@ -67,8 +66,15 @@ if __name__ == '__main__':
 
     请一步一步的推理
 
-    对话记录：
-    {context3}
+    例子：
+    {example}
+    ---
+    {example2}
+    ---
+    {example3}
+    
+    用户问：最划算的是哪个
+    
     """
 
     response = get_completion(prompt)

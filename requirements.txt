@@ -1,0 +1,96 @@
+# ==================== 核心依赖 ====================
+# 配置管理
+python-dotenv>=1.0.0
+
+# OpenAI（固定版本避免兼容性问题）
+openai>=1.54.0
+httpx>=0.27.0
+
+# ==================== LangChain 生态 ====================
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.10
+
+# LangGraph（Agent 开发）
+langgraph>=0.0.20
+
+# ==================== 向量数据库与检索 ====================
+# FAISS
+faiss-cpu>=1.7.4  # 如果有 GPU，使用 faiss-gpu
+
+# Elasticsearch
+elasticsearch>=8.0.0
+
+# ChromaDB
+chromadb>=0.4.0
+
+# ==================== Embedding 模型 ====================
+sentence-transformers>=2.2.0
+transformers>=4.30.0
+torch>=2.0.0
+
+# ==================== 文档处理 ====================
+# PDF 处理
+pypdf>=3.0.0
+pdfplumber>=0.9.0
+
+# 文档加载
+unstructured>=0.10.0
+
+# ==================== 监控与追踪 ====================
+# Langfuse
+langfuse>=2.0.0
+
+# LangSmith（可选）
+# langsmith>=0.0.60
+
+# ==================== 数据处理 ====================
+pandas>=2.0.0
+numpy>=1.24.0
+
+# ==================== Web 框架（如需要 API 服务）====================
+fastapi>=0.100.0
+uvicorn>=0.23.0
+
+# ==================== 工具库 ====================
+# HTTP 请求
+requests>=2.31.0
+httpx>=0.24.0
+
+# 异步支持
+aiohttp>=3.8.0
+
+# JSON 处理
+pydantic>=2.0.0
+
+# ==================== 开发工具 ====================
+# 类型检查
+mypy>=1.0.0
+
+# 代码格式化
+black>=23.0.0
+isort>=5.12.0
+
+# 测试
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# ==================== Jupyter 支持（学习用）====================
+jupyter>=1.0.0
+notebook>=7.0.0
+ipykernel>=6.25.0
+
+# ==================== 其他常用库 ====================
+# 环境变量
+python-decouple>=3.8
+
+# 日志
+loguru>=0.7.0
+
+# 进度条
+tqdm>=4.65.0
+
+# YAML 配置
+pyyaml>=6.0
+

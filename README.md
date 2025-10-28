@@ -51,18 +51,99 @@
 
 ## 🚀 快速开始
 
-1. 克隆项目
+### 方式一：自动化安装（推荐）
+
+运行安装脚本，自动完成环境配置：
+
+```bash
+bash setup.sh
+```
+
+脚本会帮你：
+- 创建虚拟环境（venv 或 conda）
+- 安装所有依赖
+- 创建配置文件模板
+
+### 方式二：手动安装
+
+1. **克隆项目**
 ```bash
 git clone <your-repo-url>
 cd agi_study
 ```
 
-2. 安装依赖
+2. **创建虚拟环境**
+
+使用 venv:
 ```bash
+python -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+# 或 .venv\Scripts\activate  # Windows
+```
+
+使用 conda:
+```bash
+conda create -n agi_study python=3.11
+conda activate agi_study
+```
+
+3. **安装依赖**
+```bash
+# 使用国内镜像加速
+pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+
+# 或使用官方源
 pip install -r requirements.txt
 ```
 
-3. 按顺序学习各个模块
+4. **配置环境变量**
+```bash
+# 复制配置模板
+cp .env.example .env
+
+# 编辑 .env 文件，填入你的 API Key
+vim .env  # 或使用其他编辑器
+```
+
+在 `.env` 中配置：
+```bash
+OPENAI_API_KEY=your-api-key-here
+OPENAI_BASE_URL=https://api.openai.com/v1  # 可选
+OPENAI_MODEL=gpt-3.5-turbo                  # 可选
+```
+
+5. **测试配置**
+```bash
+python config.py
+```
+
+6. **开始学习**
+
+按顺序学习各个模块，每个代码文件都可以直接运行！
+
+### 在代码中使用配置
+
+所有示例代码都可以统一使用配置：
+
+```python
+from config import settings
+
+# 使用 OpenAI
+from openai import OpenAI
+client = OpenAI(
+    api_key=settings.OPENAI_API_KEY,
+    base_url=settings.OPENAI_BASE_URL
+)
+
+# 使用 LangChain
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(
+    model=settings.OPENAI_MODEL,
+    api_key=settings.OPENAI_API_KEY
+)
+```
+
+详细配置说明请查看：[CONFIG_USAGE.md](./CONFIG_USAGE.md)
 
 ## 📖 学习建议
 

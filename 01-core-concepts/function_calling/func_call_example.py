@@ -7,13 +7,11 @@ Date: 2024/1/31
 
 # 初始化
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
-import os
+from config import settings
 import json
 
-_ = load_dotenv(find_dotenv())
 
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 
 """
 打印参数。如果参数是有结构的（如字典或列表），则以格式化的 JSON 形式打印；
@@ -96,7 +94,7 @@ def result():
                 {
                     "tool_call_id": tool_call.id,  # 用于标识函数调用的 ID
                     "role": "tool",
-                    "name": "sum",
+                    "name": "count",
                     "content": str(result)  # 数值 result 必须转成字符串
                 }
             )

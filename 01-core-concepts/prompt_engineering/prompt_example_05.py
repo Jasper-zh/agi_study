@@ -8,11 +8,9 @@ Date: 2024/1/26
 import json
 import copy
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
+from config import settings
 
-_ = load_dotenv(find_dotenv())
-
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 
 instruction = """
 你的任务是识别用户对手机流量套餐产品的选择条件。
@@ -20,7 +18,24 @@ instruction = """
 根据用户输入，识别用户在上述三种属性上的倾向。
 """
 
-# 输出格式
+###
+# 要求按照输出格式进行解析
+# {
+#     name: "",
+#     price: {
+#         operator:"",
+#         value:""
+#     },
+#     data: {
+#         operator:"",
+#         value:""
+#     },
+#     sort: {
+#         ordering:"",
+#         value: ""
+#     }
+# }
+###
 output_format = """
 以JSON格式输出。
 1. name字段的取值为string类型，取值必须为以下之一：经济套餐、畅游套餐、无限套餐、校园套餐 或 null；
@@ -69,7 +84,7 @@ class NLU:
         semantics = json.loads(response.choices[0].message.content)
         return {k: v for k, v in semantics.items() if v}
 
-    # 拼接上用户输入，调用上面的私有方法 _get_completion 获取语义解析
+    # 拼接上用户输入，调用上面的私有方法 _get_completion 获取语义解析的JSON
     def parse(self, user_input):
         prompt = self.prompt_template.replace("__INPUT__", user_input)
         return self._get_completion(prompt)
@@ -79,7 +94,7 @@ class DST:
     def __init__(self):
         pass
 
-    # 根据NLU解析得到的语义信息，更新对话状态
+    # 根据NLU解析得到的语义信息，更新对话状态（根据单次的解析的JSON条件，动态叠加到最新的条件）
     def update(self, state, nlu_semantics):
         # 本次语义指定了名称不需要之前的状态了
         if "name" in nlu_semantics:
@@ -94,7 +109,7 @@ class DST:
             state[k] = v
         return state
 
-# MockedDB类，用于模拟数据库，提供流量套餐的数据
+# MockedDB类，用于模拟数据库，提供流量套餐的数据，根据解析规则进行查询。实际就可以使用sql而不是这种模拟查询。
 class MockedDB:
     # 初始化模拟数据库，包含一些流量套餐的信息
     def __init__(self):

@@ -13,20 +13,19 @@ Date: 2024/1/31
 
 # 初始化
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
+from config import settings
 import json
 import requests
 
-_ = load_dotenv(find_dotenv())
 
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 
 
-amap_key = "986f275457d96f16ec8cba3f12e3eaba"
+
 
 
 def get_adCode(address):
-    url = f"https://restapi.amap.com/v3/geocode/geo?key={amap_key}&address={address}"
+    url = f"https://restapi.amap.com/v3/geocode/geo?key={settings.AMAP_API_KEY}&address={address}"
     print(url)
     r = requests.get(url)
     result = r.json()
@@ -35,7 +34,7 @@ def get_adCode(address):
 # 地图接口：可以通过关键字和地点经纬度，搜索该地点附近满足关键字的地方
 # https://restapi.amap.com/v5/place/around?key=6d672e6194caa3b639fccf2caf06c342&keywords=咖啡厅&location=113.587617,37.862361
 def get_weather(adcode):
-    url = f"https://restapi.amap.com/v3/weather/weatherInfo?key={amap_key}&city={adcode}"
+    url = f"https://restapi.amap.com/v3/weather/weatherInfo?key={settings.AMAP_API_KEY}&city={adcode}"
     print(url)
     r = requests.get(url)
     result = r.json()

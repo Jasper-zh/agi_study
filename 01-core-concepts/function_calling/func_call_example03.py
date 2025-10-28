@@ -5,13 +5,11 @@ Author: zhang
 Date: 2024/1/31
 """
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
-import os
+from config import settings
 import json
 
-_ = load_dotenv(find_dotenv())
 
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 
 def print_json(data):
     if hasattr(data, 'model_dump_json'):
@@ -60,7 +58,7 @@ def get_completion(messages, model="gpt-3.5-turbo"):
     return response.choices[0].message
 
 if __name__ == '__main__':
-    prompt = "帮我寄给王卓然，地址是北京市朝阳区亮马桥外交办公大楼，电话13012345678。"
+    prompt = "帮我寄给小明，地址是北京市朝阳区亮马桥外交办公大楼，电话13234563456。"
     messages = [
         {"role": "system", "content": "你是一个联系人录入员。"},
         {"role": "user", "content": prompt}

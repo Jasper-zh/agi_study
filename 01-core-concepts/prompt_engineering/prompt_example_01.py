@@ -5,10 +5,10 @@ Author: zhang
 Date: 2024/2/29
 """
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
+from config import settings
 
-_ = load_dotenv(find_dotenv())
-client = OpenAI()
+
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 messages = []
 
 

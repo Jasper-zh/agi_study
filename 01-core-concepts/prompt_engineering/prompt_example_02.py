@@ -1,17 +1,14 @@
 """
-nlg_example02.py -
+prompt_example_02.py -
 
 Author: zhang
 Date: 2024/1/31
 """
 
-import json
-import copy
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
+from config import settings
 
-_ = load_dotenv(find_dotenv())
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY,base_url=settings.OPENAI_BASE_URL)
 
 instruction = """
 # Character
